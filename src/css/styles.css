@@ -10,6 +10,7 @@ body {
   display: flex;
   width: 100%;
   height: 100%;
+  margin: 0;
   padding: 36px 0px 364px 0px;
   flex-direction: column;
   align-items: center;
@@ -149,7 +150,6 @@ button:hover {
   justify-content: center;
   align-items: center;
   width: 100%;
-  /* width: calc((100% - 2 * 24px) / 3); */
   height: 230px;
   overflow: hidden;
 }
@@ -189,4 +189,12 @@ button:hover {
   font-weight: 600;
   line-height: 16px; /* 133.333% */
   letter-spacing: 0.48px;
+}
+
+.load-button {
+  display: inline-flex;
+}
+
+.load-button.is-hidden {
+  display: none;
 }
