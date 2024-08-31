@@ -89,7 +89,8 @@ const onLoadButtonClick = async event => {
     const totalResults = response.data.total;
     const totalPages = Math.ceil(totalResults / perPage);
 
-    if (currentPage > totalPages) {
+    if (currentPage >= totalPages) {
+      observer.observe(scrollObserver);
       loadButton.classList.add('is-hidden');
       return iziToast.error({
         message:
@@ -106,6 +107,21 @@ const onLoadButtonClick = async event => {
     loaderSecond.classList.add('is-hidden');
   }
 };
+
+const observer = new IntersectionObserver((entries, observer) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      observer.disconnect();
+    }
+  });
+}, {
+  rootMargin: '0px',
+  threshold: 1.0
+});
+
+const scrollObserver = document.createElement('div');
+scrollObserver.id = 'scrollObserver';
+gallery.appendChild(scrollObserver);
 
 let galleryLibrary = new SimpleLightbox('.gallery li a', {
   captions: true,
