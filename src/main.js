@@ -51,7 +51,11 @@ const onFormSubmit = async event => {
     const galleryMarkup = response.data.hits.map(createGalleryMarkup).join('');
     gallery.innerHTML = galleryMarkup;
 
-    loadButton.classList.remove('is-hidden');
+    if (response.data.hits.length < perPage) {
+      loadButton.classList.add('is-hidden');
+    } else {
+      loadButton.classList.remove('is-hidden');
+    }
 
     galleryLibrary.refresh();
   } catch (err) {
@@ -89,8 +93,7 @@ const onLoadButtonClick = async event => {
     const totalResults = response.data.total;
     const totalPages = Math.ceil(totalResults / perPage);
 
-    if (currentPage >= totalPages) {
-      observer.observe(scrollObserver);
+    if (currentPage >= totalPages || response.data.hits.length < perPage) {
       loadButton.classList.add('is-hidden');
       return iziToast.error({
         message:
@@ -107,21 +110,6 @@ const onLoadButtonClick = async event => {
     loaderSecond.classList.add('is-hidden');
   }
 };
-
-const observer = new IntersectionObserver((entries, observer) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      observer.disconnect();
-    }
-  });
-}, {
-  rootMargin: '0px',
-  threshold: 1.0
-});
-
-const scrollObserver = document.createElement('div');
-scrollObserver.id = 'scrollObserver';
-gallery.appendChild(scrollObserver);
 
 let galleryLibrary = new SimpleLightbox('.gallery li a', {
   captions: true,
