@@ -53,6 +53,11 @@ const onFormSubmit = async event => {
 
     if (response.data.hits.length < perPage) {
       loadButton.classList.add('is-hidden');
+      iziToast.error({
+        message:
+          'We are sorry, but you have reached the end of search results!',
+        position: 'center',
+      });
     } else {
       loadButton.classList.remove('is-hidden');
     }
